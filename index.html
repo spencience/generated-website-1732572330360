@@ -6,6 +6,7 @@
     <meta name="description" content="Interactive 3D Venus de Milo statue visualization">
     <title>Venus de Milo - 3D Interactive View</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
     <style>
         body {
             margin: 0;
@@ -30,14 +31,14 @@
 <body>
     <main id="main-content" role="main">
         <div id="scene-container" role="presentation" aria-label="3D Venus de Milo statue visualization"></div>
-        <div class="info-overlay">
-            <h1>Venus de Milo</h1>
-            <p>Click and drag to rotate. Scroll to zoom.</p>
+        <div class="info-overlay" role="complementary" aria-label="Interaction instructions">
+            <h1 id="title">Venus de Milo</h1>
+            <p id="instructions" aria-live="polite">Click and drag to rotate. Scroll to zoom.</p>
         </div>
     </main>
 
     <script>
-        let scene, camera, renderer, statue;
+        let scene, camera, renderer, statue, controls;
 
         function init() {
             scene = new THREE.Scene();
@@ -47,6 +48,14 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             document.getElementById('scene-container').appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 3;
+            controls.maxDistance = 10;
+            controls.maxPolarAngle = Math.PI;
 
             const torsoGeometry = new THREE.Group();
 
@@ -136,7 +145,7 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            statue.rotation.y += 0.003;
+            controls.update();
             renderer.render(scene, camera);
         }
 
