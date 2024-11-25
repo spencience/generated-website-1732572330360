@@ -1,71 +1,100 @@
-Here's the corrected HTML with arms added to the Venus de Milo statue model:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
-<!-- Previous head section remains unchanged -->
 <head>
-    <!-- Head content unchanged -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive 3D Venus de Milo statue visualization">
+    <title>Venus de Milo - 3D Interactive View</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background: #1a202c;
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        #scene-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        .info-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+    </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-    <!-- Previous header and main container structure remains unchanged until the script -->
+<body>
+    <main id="main-content" role="main">
+        <div id="scene-container" role="presentation" aria-label="3D Venus de Milo statue visualization"></div>
+        <div class="info-overlay">
+            <h1>Venus de Milo</h1>
+            <p>Click and drag to rotate. Scroll to zoom.</p>
+        </div>
+    </main>
 
     <script>
-        function initThreeJS() {
-            // Previous setup code remains the same until torsoGeometry creation
+        let scene, camera, renderer, statue;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('scene-container').appendChild(renderer.domElement);
 
             const torsoGeometry = new THREE.Group();
 
-            // Main torso (unchanged)
-            const bodyGeometry = new THREE.CylinderGeometry(0.8, 0.6, 2.5, 32);
             const bodyMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0xe0e0e0,
                 roughness: 0.5,
                 metalness: 0.1
             });
+
+            // Body
+            const bodyGeometry = new THREE.CylinderGeometry(0.8, 0.6, 2.5, 32);
             const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
             body.position.y = 0.2;
             torsoGeometry.add(body);
 
-            // Add left arm
+            // Left Arm
             const leftArmGroup = new THREE.Group();
-            
-            // Upper arm
             const upperArmGeometry = new THREE.CylinderGeometry(0.15, 0.12, 0.8, 32);
             const leftUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial);
             leftUpperArm.position.set(0, 0.4, 0);
-            leftUpperArm.rotation.z = Math.PI * 0.15; // Slight outward angle
+            leftUpperArm.rotation.z = Math.PI * 0.15;
             leftArmGroup.add(leftUpperArm);
 
-            // Forearm
             const forearmGeometry = new THREE.CylinderGeometry(0.12, 0.1, 0.7, 32);
             const leftForearm = new THREE.Mesh(forearmGeometry, bodyMaterial);
             leftForearm.position.set(0.1, -0.2, 0);
-            leftForearm.rotation.z = Math.PI * 0.1; // Slight bend at elbow
+            leftForearm.rotation.z = Math.PI * 0.1;
             leftArmGroup.add(leftForearm);
-
+            
             leftArmGroup.position.set(1, 1, 0);
             torsoGeometry.add(leftArmGroup);
 
-            // Add right arm
+            // Right Arm
             const rightArmGroup = new THREE.Group();
-            
-            // Upper arm
             const rightUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial);
             rightUpperArm.position.set(0, 0.4, 0);
-            rightUpperArm.rotation.z = -Math.PI * 0.15; // Mirror of left arm
+            rightUpperArm.rotation.z = -Math.PI * 0.15;
             rightArmGroup.add(rightUpperArm);
 
-            // Forearm
             const rightForearm = new THREE.Mesh(forearmGeometry, bodyMaterial);
             rightForearm.position.set(-0.1, -0.2, 0);
-            rightForearm.rotation.z = -Math.PI * 0.1; // Mirror of left arm
+            rightForearm.rotation.z = -Math.PI * 0.1;
             rightArmGroup.add(rightForearm);
 
             rightArmGroup.position.set(-1, 1, 0);
             torsoGeometry.add(rightArmGroup);
 
-            // Previous body parts remain unchanged
+            // Additional body parts
             const hipGeometry = new THREE.SphereGeometry(0.7, 32, 32);
             const hip = new THREE.Mesh(hipGeometry, bodyMaterial);
             hip.position.y = -1;
@@ -88,24 +117,37 @@ Here's the corrected HTML with arms added to the Venus de Milo statue model:
             head.position.y = 2.2;
             torsoGeometry.add(head);
 
-            // Rest of the code remains unchanged
-            scene.add(torsoGeometry);
+            statue = torsoGeometry;
+            scene.add(statue);
 
-            // Previous lighting, camera, and animation code remains unchanged
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            camera.position.z = 5;
+            camera.position.y = 1;
+
+            animate();
         }
 
-        // Previous event listeners remain unchanged
+        function animate() {
+            requestAnimationFrame(animate);
+            statue.rotation.y += 0.003;
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.addEventListener('load', init);
+        window.addEventListener('resize', onWindowResize);
     </script>
 </body>
 </html>
-```
-
-The main changes include:
-1. Added detailed arm geometry for both left and right arms
-2. Created separate groups for each arm to manage their positioning
-3. Added upper arms and forearms with appropriate dimensions
-4. Positioned arms naturally at the shoulders
-5. Added slight angles to create a more natural pose
-6. Maintained the marble material consistency across all parts
-
-The rest of the HTML structure and functionality remains unchanged, maintaining all the previous accessibility features and error handling.
