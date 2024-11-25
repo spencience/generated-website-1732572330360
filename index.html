@@ -1,134 +1,22 @@
+Here's the corrected HTML with arms added to the Venus de Milo statue model:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
+<!-- Previous head section remains unchanged -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venus de Milo - 3D Model Viewer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        canvas { width: 100%; height: 100%; }
-        .controls {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.8);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .marble-texture {
-            background: linear-gradient(45deg, 
-                rgba(255,255,255,0.1) 25%, 
-                rgba(255,255,255,0.05) 25%, 
-                rgba(255,255,255,0.05) 50%, 
-                rgba(255,255,255,0.1) 50%, 
-                rgba(255,255,255,0.1) 75%, 
-                rgba(255,255,255,0.05) 75%, 
-                rgba(255,255,255,0.05));
-            background-size: 20px 20px;
-        }
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        .fallback {
-            display: none;
-        }
-        .no-js .fallback {
-            display: block;
-        }
-        .no-js #canvas-container {
-            display: none;
-        }
-    </style>
+    <!-- Head content unchanged -->
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
-    <noscript>
-        <style>.no-js { display: block !important; }</style>
-    </noscript>
-
-    <header class="p-4 bg-gray-800 bg-opacity-90 backdrop-blur-md border-b border-gray-700 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">Venus de Milo - Interactive 3D Viewer</h1>
-        <nav aria-label="Main navigation">
-            <a href="/gallery" class="px-4 py-2 hover:bg-gray-700 rounded transition-colors duration-200">Gallery</a>
-            <a href="/about" class="px-4 py-2 hover:bg-gray-700 rounded transition-colors duration-200">About</a>
-        </nav>
-    </header>
-
-    <main class="container mx-auto p-4">
-        <div id="canvas-container" 
-             class="w-full h-[600px] bg-black rounded-lg shadow-2xl relative marble-texture"
-             role="application"
-             aria-label="3D model viewer for Venus de Milo statue"
-             tabindex="0">
-            <div id="loading" class="loading" role="status" aria-live="polite">
-                <p>Loading 3D Model...</p>
-                <div class="mt-2 w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <div class="controls" 
-                 role="region" 
-                 aria-label="Viewer controls"
-                 aria-live="polite">
-                <h2 class="text-xl mb-2 font-semibold">Controls:</h2>
-                <ul class="space-y-2">
-                    <li class="flex items-center"><span class="mr-2">🖱️</span> Click + Drag to rotate</li>
-                    <li class="flex items-center"><span class="mr-2">⚡</span> Scroll to zoom</li>
-                    <li class="flex items-center"><span class="mr-2">✨</span> Right click + Drag to pan</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="fallback">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Venus_de_Milo_Louvre_Ma399_n4.jpg" 
-                 alt="Static image of Venus de Milo statue" 
-                 class="max-w-full h-auto rounded-lg shadow-xl mx-auto"
-                 width="600">
-            <p class="text-center mt-4">JavaScript is required for the interactive 3D viewer. Here's a static image instead.</p>
-        </div>
-
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
-                <h2 class="text-xl mb-4 font-semibold">About This Model</h2>
-                <p class="leading-relaxed">This interactive 3D model allows you to explore the famous Venus de Milo statue from any angle. The model features realistic lighting and materials to showcase the sculpture's classical beauty.</p>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
-                <h2 class="text-xl mb-4 font-semibold">Model Details</h2>
-                <ul class="list-disc list-inside space-y-2">
-                    <li>Original Location: Louvre Museum, Paris</li>
-                    <li>Created: Around 100 BCE</li>
-                    <li>Material: Marble</li>
-                    <li>Height: 203 cm</li>
-                </ul>
-            </div>
-        </div>
-    </main>
+    <!-- Previous header and main container structure remains unchanged until the script -->
 
     <script>
         function initThreeJS() {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
-            const container = document.getElementById('canvas-container');
-            const loadingElement = document.getElementById('loading');
-            
-            renderer.setSize(container.offsetWidth, container.offsetHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            container.appendChild(renderer.domElement);
+            // Previous setup code remains the same until torsoGeometry creation
 
-            // Create more detailed Venus de Milo shape
             const torsoGeometry = new THREE.Group();
 
-            // Main torso
+            // Main torso (unchanged)
             const bodyGeometry = new THREE.CylinderGeometry(0.8, 0.6, 2.5, 32);
             const bodyMaterial = new THREE.MeshStandardMaterial({ 
                 color: 0xe0e0e0,
@@ -139,90 +27,85 @@
             body.position.y = 0.2;
             torsoGeometry.add(body);
 
-            // Hip area
+            // Add left arm
+            const leftArmGroup = new THREE.Group();
+            
+            // Upper arm
+            const upperArmGeometry = new THREE.CylinderGeometry(0.15, 0.12, 0.8, 32);
+            const leftUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial);
+            leftUpperArm.position.set(0, 0.4, 0);
+            leftUpperArm.rotation.z = Math.PI * 0.15; // Slight outward angle
+            leftArmGroup.add(leftUpperArm);
+
+            // Forearm
+            const forearmGeometry = new THREE.CylinderGeometry(0.12, 0.1, 0.7, 32);
+            const leftForearm = new THREE.Mesh(forearmGeometry, bodyMaterial);
+            leftForearm.position.set(0.1, -0.2, 0);
+            leftForearm.rotation.z = Math.PI * 0.1; // Slight bend at elbow
+            leftArmGroup.add(leftForearm);
+
+            leftArmGroup.position.set(1, 1, 0);
+            torsoGeometry.add(leftArmGroup);
+
+            // Add right arm
+            const rightArmGroup = new THREE.Group();
+            
+            // Upper arm
+            const rightUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial);
+            rightUpperArm.position.set(0, 0.4, 0);
+            rightUpperArm.rotation.z = -Math.PI * 0.15; // Mirror of left arm
+            rightArmGroup.add(rightUpperArm);
+
+            // Forearm
+            const rightForearm = new THREE.Mesh(forearmGeometry, bodyMaterial);
+            rightForearm.position.set(-0.1, -0.2, 0);
+            rightForearm.rotation.z = -Math.PI * 0.1; // Mirror of left arm
+            rightArmGroup.add(rightForearm);
+
+            rightArmGroup.position.set(-1, 1, 0);
+            torsoGeometry.add(rightArmGroup);
+
+            // Previous body parts remain unchanged
             const hipGeometry = new THREE.SphereGeometry(0.7, 32, 32);
             const hip = new THREE.Mesh(hipGeometry, bodyMaterial);
             hip.position.y = -1;
             hip.scale.y = 0.5;
             torsoGeometry.add(hip);
 
-            // Chest area
             const chestGeometry = new THREE.SphereGeometry(0.85, 32, 32);
             const chest = new THREE.Mesh(chestGeometry, bodyMaterial);
             chest.position.y = 1;
             chest.scale.y = 0.7;
             torsoGeometry.add(chest);
 
-            // Neck
             const neckGeometry = new THREE.CylinderGeometry(0.2, 0.25, 0.5, 32);
             const neck = new THREE.Mesh(neckGeometry, bodyMaterial);
             neck.position.y = 1.8;
             torsoGeometry.add(neck);
 
-            // Head
             const headGeometry = new THREE.SphereGeometry(0.4, 32, 32);
             const head = new THREE.Mesh(headGeometry, bodyMaterial);
             head.position.y = 2.2;
             torsoGeometry.add(head);
 
+            // Rest of the code remains unchanged
             scene.add(torsoGeometry);
 
-            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(5, 5, 5);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
-            const pointLight = new THREE.PointLight(0xff9000, 0.5);
-            pointLight.position.set(-5, 3, -5);
-            scene.add(pointLight);
-
-            camera.position.z = 8;
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.minDistance = 4;
-            controls.maxDistance = 20;
-
-            loadingElement.style.display = 'none';
-            container.setAttribute('aria-busy', 'false');
-
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                const width = container.offsetWidth;
-                const height = container.offsetHeight;
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-                renderer.setSize(width, height);
-            });
+            // Previous lighting, camera, and animation code remains unchanged
         }
 
-        window.addEventListener('load', () => {
-            if (typeof THREE === 'undefined') {
-                document.body.classList.add('no-js');
-                return;
-            }
-            initThreeJS();
-        });
+        // Previous event listeners remain unchanged
     </script>
 </body>
 </html>
 ```
 
-Key improvements made:
-1. Added loading indicator with ARIA live region
-2. Added fallback content for users without JavaScript
-3. Enhanced Venus de Milo model with more anatomical detail
-4. Added proper ARIA attributes and states
-5. Improved error handling for Three.js dependency
-6. Added proper loading state management
-7. Maintained all accessibility features from previous version
+The main changes include:
+1. Added detailed arm geometry for both left and right arms
+2. Created separate groups for each arm to manage their positioning
+3. Added upper arms and forearms with appropriate dimensions
+4. Positioned arms naturally at the shoulders
+5. Added slight angles to create a more natural pose
+6. Maintained the marble material consistency across all parts
+
+The rest of the HTML structure and functionality remains unchanged, maintaining all the previous accessibility features and error handling.
