@@ -20,6 +20,10 @@
             width: 100vw;
             height: 100vh;
         }
+        #scene-container:focus {
+            outline: 2px solid #4299e1;
+            outline-offset: -2px;
+        }
         .info-overlay {
             position: absolute;
             top: 20px;
@@ -49,7 +53,7 @@
 </head>
 <body>
     <main id="main-content" role="main">
-        <div id="scene-container" role="application" aria-label="3D Venus de Milo statue visualization" tabindex="0" aria-controls="loading-screen error-message">
+        <div id="scene-container" role="application" aria-label="3D Venus de Milo statue visualization" tabindex="0" aria-controls="loading-screen error-message" aria-describedby="instructions">
             <div id="loading-screen" class="loading-screen">
                 <p>Loading 3D Model...</p>
             </div>
@@ -67,7 +71,7 @@
     </main>
 
     <script defer>
-        let scene, camera, renderer, statue, controls;
+        let scene, camera, renderer, statue, controls, animationFrameId;
 
         function init() {
             const loadingScreen = document.getElementById('loading-screen');
@@ -94,10 +98,33 @@
                 controls.maxDistance = 10;
                 controls.maxPolarAngle = Math.PI;
 
+                // Torso
                 const torsoGeometry = new THREE.CylinderGeometry(0.5, 0.3, 1.5, 32);
                 const torsoMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
                 statue = new THREE.Mesh(torsoGeometry, torsoMaterial);
                 scene.add(statue);
+
+                // Head
+                const headGeometry = new THREE.SphereGeometry(0.25, 32, 32);
+                const headMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
+                const head = new THREE.Mesh(headGeometry, headMaterial);
+                head.position.y = 1;
+                statue.add(head);
+
+                // Arms
+                const armGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.8, 16);
+                
+                // Left arm
+                const leftArm = new THREE.Mesh(armGeometry, torsoMaterial);
+                leftArm.position.set(0.6, 0.4, 0);
+                leftArm.rotation.z = Math.PI / 3;
+                statue.add(leftArm);
+
+                // Right arm
+                const rightArm = new THREE.Mesh(armGeometry, torsoMaterial);
+                rightArm.position.set(-0.6, 0.4, 0);
+                rightArm.rotation.z = -Math.PI / 3;
+                statue.add(rightArm);
 
                 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
                 scene.add(ambientLight);
@@ -147,7 +174,7 @@
         }
 
         function animate() {
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
             if (controls) controls.update();
             renderer.render(scene, camera);
         }
@@ -167,6 +194,13 @@
             }
         });
         window.addEventListener('resize', onWindowResize);
+
+        // Cleanup
+        window.addEventListener('unload', () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        });
     </script>
 </body>
 </html>
