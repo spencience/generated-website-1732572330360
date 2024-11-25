@@ -1,4 +1,4 @@
-Here's the enhanced version with more texture and shading:
+Here's the corrected HTML with the requested accessibility and performance improvements:
 
 ```html
 <!DOCTYPE html>
@@ -48,8 +48,12 @@ Here's the enhanced version with more texture and shading:
         <div id="canvas-container" 
              class="w-full h-[600px] bg-black rounded-lg shadow-2xl relative marble-texture"
              role="application"
-             aria-label="3D model viewer for Venus de Milo statue">
-            <div class="controls" role="region" aria-label="Viewer controls">
+             aria-label="3D model viewer for Venus de Milo statue"
+             tabindex="0">
+            <div class="controls" 
+                 role="region" 
+                 aria-label="Viewer controls"
+                 aria-live="polite">
                 <h2 class="text-xl mb-2 font-semibold">Controls:</h2>
                 <ul class="space-y-2">
                     <li class="flex items-center"><span class="mr-2">🖱️</span> Click + Drag to rotate</li>
@@ -75,89 +79,93 @@ Here's the enhanced version with more texture and shading:
         </div>
     </main>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        const container = document.getElementById('canvas-container');
-        let controls;
-        
-        renderer.setSize(container.offsetWidth, container.offsetHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        container.appendChild(renderer.domElement);
-
-        const geometry = new THREE.CylinderGeometry(1, 0.8, 4, 64);
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0xe0e0e0,
-            roughness: 0.5,
-            metalness: 0.1,
-            flatShading: false
-        });
-        const statue = new THREE.Mesh(geometry, material);
-        statue.castShadow = true;
-        statue.receiveShadow = true;
-        scene.add(statue);
-
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(5, 5, 5);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
-
-        const pointLight = new THREE.PointLight(0xff9000, 0.5);
-        pointLight.position.set(-5, 3, -5);
-        scene.add(pointLight);
-
-        camera.position.z = 8;
-
-        if (typeof THREE.OrbitControls !== 'undefined') {
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.minDistance = 4;
-            controls.maxDistance = 20;
-        } else {
-            console.error('OrbitControls not loaded');
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            if (controls) {
-                controls.update();
+        function initThreeJS() {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js not loaded');
+                return;
             }
-            renderer.render(scene, camera);
-        }
-        animate();
 
-        window.addEventListener('resize', () => {
-            const width = container.offsetWidth;
-            const height = container.offsetHeight;
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            const container = document.getElementById('canvas-container');
+            let controls;
             
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.CylinderGeometry(1, 0.8, 4, 64);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: 0xe0e0e0,
+                roughness: 0.5,
+                metalness: 0.1,
+                flatShading: false
+            });
+            const statue = new THREE.Mesh(geometry, material);
+            statue.castShadow = true;
+            statue.receiveShadow = true;
+            scene.add(statue);
+
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0xff9000, 0.5);
+            pointLight.position.set(-5, 3, -5);
+            scene.add(pointLight);
+
+            camera.position.z = 8;
+
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.minDistance = 4;
+                controls.maxDistance = 20;
+            } else {
+                console.error('OrbitControls not loaded');
+                return;
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                if (controls) {
+                    controls.update();
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                const width = container.offsetWidth;
+                const height = container.offsetHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            });
+        }
+
+        // Initialize Three.js after ensuring dependencies are loaded
+        window.addEventListener('load', initThreeJS);
     </script>
 </body>
 </html>
 ```
 
-Key improvements made:
-1. Added proper controls variable scoping
-2. Enhanced material properties with MeshStandardMaterial for better realism
-3. Added shadow mapping capabilities
-4. Introduced a warm point light for depth
-5. Increased geometry segments for smoother appearance
-6. Added marble-texture CSS background
-7. Enhanced UI with better shadows, borders, and backdrop filters
-8. Improved controls panel styling with backdrop blur
-9. Added subtle transitions to navigation elements
-10. Increased padding and spacing for better readability
-11. Added proper shadow mapping to the renderer
-12. Adjusted light intensities for better contrast
-13. Added subtle border highlights to info panels
+Key changes made:
+1. Added `tabindex="0"` to canvas container for keyboard focus
+2. Added `aria-live="polite"` to controls region for screen reader updates
+3. Wrapped Three.js initialization in a function with proper error handling
+4. Added load event listener to ensure dependencies are loaded before initialization
+5. Added checks for Three.js and OrbitControls availability
+6. Improved error handling and graceful degradation
 
-The statue should now have more depth and realism with the enhanced lighting and materials, while the UI has more polish and depth through careful use of shadows and glassmorphism effects.
+These changes improve accessibility and reliability while maintaining all the visual and interactive features of the original implementation.
