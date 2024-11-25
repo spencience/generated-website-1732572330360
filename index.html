@@ -1,4 +1,4 @@
-Here's the corrected HTML with the material properties fixed and duplicate sections removed:
+Here's the HTML with the OrbitControls fix and added accessibility attributes:
 
 ```html
 <!DOCTYPE html>
@@ -8,7 +8,7 @@ Here's the corrected HTML with the material properties fixed and duplicate secti
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Venus de Milo - 3D Model Viewer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         canvas { width: 100%; height: 100%; }
@@ -25,14 +25,17 @@ Here's the corrected HTML with the material properties fixed and duplicate secti
 <body class="bg-gray-900 text-white min-h-screen">
     <header class="p-4 bg-gray-800 flex justify-between items-center">
         <h1 class="text-2xl font-bold">Venus de Milo - Interactive 3D Viewer</h1>
-        <nav>
+        <nav aria-label="Main navigation">
             <a href="/gallery" class="px-4 py-2 hover:bg-gray-700 rounded">Gallery</a>
             <a href="/about" class="px-4 py-2 hover:bg-gray-700 rounded">About</a>
         </nav>
     </header>
     <main class="container mx-auto p-4">
-        <div id="canvas-container" class="w-full h-[600px] bg-black rounded-lg shadow-lg relative">
-            <div class="controls">
+        <div id="canvas-container" 
+             class="w-full h-[600px] bg-black rounded-lg shadow-lg relative"
+             role="application"
+             aria-label="3D model viewer for Venus de Milo statue">
+            <div class="controls" role="region" aria-label="Viewer controls">
                 <h2 class="text-xl mb-2">Controls:</h2>
                 <ul class="space-y-1">
                     <li>🖱️ Click + Drag to rotate</li>
@@ -84,15 +87,22 @@ Here's the corrected HTML with the material properties fixed and duplicate secti
 
         camera.position.z = 8;
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.minDistance = 4;
-        controls.maxDistance = 20;
+        // Wait for OrbitControls to be available
+        if (typeof THREE.OrbitControls === 'undefined') {
+            console.error('OrbitControls not loaded');
+        } else {
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 4;
+            controls.maxDistance = 20;
+        }
 
         function animate() {
             requestAnimationFrame(animate);
-            controls.update();
+            if (typeof controls !== 'undefined') {
+                controls.update();
+            }
             renderer.render(scene, camera);
         }
         animate();
@@ -110,11 +120,14 @@ Here's the corrected HTML with the material properties fixed and duplicate secti
 </html>
 ```
 
-Key changes made:
-1. Removed `roughness` and `metalness` properties from MeshPhongMaterial (these are only for MeshStandardMaterial)
-2. Added `shininess` property which is appropriate for MeshPhongMaterial
-3. Removed all duplicate sections of HTML
-4. Maintained single, clean document structure
-5. Kept all necessary functionality intact
+Changes made:
+1. Updated OrbitControls CDN link to a more reliable source
+2. Added check for OrbitControls availability before instantiation
+3. Added ARIA roles and labels for accessibility:
+   - `role="application"` and aria-label for the 3D viewer container
+   - `role="region"` and aria-label for the controls section
+   - aria-label for the navigation
+4. Made controls reference check in animate function conditional
+5. Maintained all previous fixes for material properties
 
-The code should now work without material property warnings while maintaining the desired marble-like appearance of the statue.
+The code should now work without the OrbitControls error while being more accessible to screen readers.
